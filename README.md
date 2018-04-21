@@ -1,6 +1,7 @@
 # encoderd
 
 A python daemon for monitoring the state of multiple rotary encoders connected to a raspberry pi
+which transmit angles via mqtt protocol
 
 ## Dependencies
 
@@ -29,9 +30,9 @@ A python daemon for monitoring the state of multiple rotary encoders connected t
 ## How to use
 
 ```Bash
-$ git clone https://github.com/QuantumQuadrate/encoderd
-$ cd encoderd
-$ ./encoderd.py start
+$ git clone https://github.com/JGUINO/3205-codeurs-chariots.git
+$ cd 3205-codeurs-chariots
+$ ./codeursMQTTIO2.py start ANY
 ```
 
 Settings are stored in `encoderd-settings.py`.
