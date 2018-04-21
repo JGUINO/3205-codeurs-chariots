@@ -157,6 +157,7 @@ class MyDaemon(Daemon):
       client.publish("capteurs/angle/"+str(enc['name'])+str(enc_cnt),"Demarrage encodeur", qos=0, retain=False)
       # read recorded angle if log file exists
       self.readAngle(enc)
+
       enc_cnt += 1
 
     self.encoder_count = enc_cnt
@@ -181,6 +182,7 @@ class MyDaemon(Daemon):
     self.logger.debug("Encoder: {}: {} angle recorded as {} degrees.".format(encoder['number'],encoder['name'],angle))
     
   def zero(self):
+    ## positionne les angles de depart  
     for enc in self.encoders:
       enc['angle'] = 0.0
       self.saveAngle(enc)
