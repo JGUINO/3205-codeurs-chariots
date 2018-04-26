@@ -2,8 +2,8 @@
 
 ################################################################################
 # 
-# encoderd.py is a python based daemon for persistant monitoring of the state of
-#   any number of quadrature rotary encoders attached to a raspberry pi
+# codeursMQTTIO2.py is a python based daemon for persistant monitoring of the state of
+#   3 quadrature rotary encoders attached to a raspberry pi
 # 
 # Written by: 
 #    Matthew Ebert 
@@ -11,6 +11,9 @@
 #    University of Wisconsin - Madison
 #    mfe5003@gmail.com
 # 
+# modified by :
+#    Jerome GUILLON
+#    CMC - BREZOLLES - FRANCE
 # Python Daemon bootstrap code by:
 #    Sander Marechal
 #    http://www.jejik.com/ 
@@ -47,10 +50,6 @@ from yocto_api import *
 from yocto_digitalio import *
 from functools import partial
 #import RPi.GPIO as GPIO
-
-
-
-
 
 def on_connect(client, userdata, flags, rc):
       userdata.logger.info("Connected with result code "+str(rc))
@@ -99,7 +98,11 @@ class MyDaemon(Daemon):
             FangCaroussel = self.controle_anglesCaroussel (angleAVD, angleAVG, angleAR, FangCaroussel, Precision)
             Vcontrole_angles = False
             if self.litRelais(7) == True :
-                self.zero()
+                # initialisation mode Carroussel
+                self.zero(2)
+            if self.litRelais(6) == True :
+                # initialisation mode roulage droit
+                self.zero(1)
       time.sleep(settings.REFRESH_RATE)
       #time.sleep(0.01)
 
@@ -180,11 +183,32 @@ class MyDaemon(Daemon):
     with open(encoder['logfile'], 'w') as fo:
       fo.write(str(angle))
     self.logger.debug("Encoder: {}: {} angle recorded as {} degrees.".format(encoder['number'],encoder['name'],angle))
-    
-  def zero(self):
-    ## positionne les angles de depart  
+  
+ # Initalisation des angles    
+  def zero(self, mode):
+    ## positionne les angles de depart  en mode 1 droit ou mode 2 caroussel
+   
     for enc in self.encoders:
-      enc['angle'] = 0.0
+       if enc['number'] == 0:
+            #angleAVG
+            if mode == 1 :     
+                enc['angle'] = 0.0
+            elif mode == 2 :
+                enc['angle'] = -110.0  
+        elif enc['number'] == 1:
+           #angleAVD
+           if mode == 1 :     
+                enc['angle'] = 0.0
+            elif mode == 2 :
+                enc['angle'] = 110.0 
+         
+        elif enc['number'] == 2:
+           #angleAR
+           if mode == 1 :     
+                enc['angle'] = -20.0
+            elif mode == 2 :
+                enc['angle'] = 90.0
+      
       self.saveAngle(enc)
 
   def setupMaxiIO(self, pargv):
@@ -250,20 +274,20 @@ class MyDaemon(Daemon):
        
         return 
 
-  def gererelais(self):
-        outputdata = 0
-        while self.io.isOnline():
-            inputdata = self.io.get_portState()  # read port values
-            line = ""  # display part state value as binary
-            for i in range(0, 8):
-                if (inputdata & (128 >> i)) > 0:
-                    line += '1'
-                else:
-                    line += '0'
-            YAPI.Sleep(500, errmsg)
-
-        print("Module disconnected")
-        YAPI.FreeAPI()
+#  def gererelais(self):
+#        outputdata = 0
+#        while self.io.isOnline():
+#            inputdata = self.io.get_portState()  # read port values
+#            line = ""  # display part state value as binary
+#            for i in range(0, 8):
+#                if (inputdata & (128 >> i)) > 0:
+#                    line += '1'
+#                else:
+#                    line += '0'
+#            YAPI.Sleep(500, errmsg)
+#
+#        print("Module disconnected")
+#        YAPI.FreeAPI()
 
   def controle_angleAR(self, angAVD, angAVG, angAR, FangAR, angVoulu, Precision):
     
@@ -328,12 +352,10 @@ if __name__ == "__main__":
       daemon.stop()
     elif 'restart' == sys.argv[1]:
       daemon.restart()
-    elif 'zero' == sys.argv[1]:
-      daemon.zero()
     else:
       print( "Unknown command")
       sys.exit(2)
     sys.exit(0)
   else:
-    print ("usage: ",sys.argv[0], " start|stop|restart|foreground|zero NomduMaxiIOV2 ") 
+    print ("usage: ",sys.argv[0], " start|stop|restart|foreground NomduMaxiIOV2 ") 
     sys.exit(2)
