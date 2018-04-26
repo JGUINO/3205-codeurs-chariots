@@ -1,0 +1,28 @@
+#!/bin/sh
+
+cd encoderd
+
+case "$1" in
+
+    start)
+
+        python3 codeursMQTTIO2.py start ANY
+
+    ;;
+
+
+    stop )
+
+        ##
+
+    ;;
+
+    *)
+
+        ## sans argument
+        exit 1
+    ;;
+
+esac
+
+exit 0
