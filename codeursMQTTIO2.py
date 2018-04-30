@@ -75,6 +75,7 @@ class MyDaemon(Daemon):
     FangAR0 = False
     FangCaroussel = 0
     #JGUI TEST
+    compteur = 0
     Precision = settings.PRECISION
     
     while True:
@@ -105,6 +106,10 @@ class MyDaemon(Daemon):
                 self.zero(1)
       time.sleep(settings.REFRESH_RATE)
       #time.sleep(0.01)
+      compteur = compteur +1
+      if compteur  == 1000
+          client.publish("capteurs/angle","angle AVG "+str(angleAVG)+" angleAVD "+str(angleAVD)+ " angle AR "+str(angleAR),qos=0, retain=False)
+          compteur = 0
 
   def setup(self):
     with open(os.path.join(settings.DIR,'testlog.log'),'w') as log:
