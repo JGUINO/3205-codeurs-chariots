@@ -76,6 +76,7 @@ class MyDaemon(Daemon):
     FangCaroussel = 0
     #JGUI TEST
     compteur = 0
+    affichage = 0
     Precision = settings.PRECISION
     
     while True:
@@ -97,19 +98,20 @@ class MyDaemon(Daemon):
             Vcontrole_angles = True
             FangAR0 = self.controle_angleAR (angleAVD, angleAVG, angleAR, FangAR0, 0, Precision)
             FangCaroussel = self.controle_anglesCaroussel (angleAVD, angleAVG, angleAR, FangCaroussel, Precision)
-            Vcontrole_angles = False
             if self.litRelais(7) == True :
                 # initialisation mode Carroussel
                 self.zero(2)
             if self.litRelais(6) == True :
                 # initialisation mode roulage droit
                 self.zero(1)
+            Vcontrole_angles = False
       time.sleep(settings.REFRESH_RATE)
       #time.sleep(0.01)
       compteur = compteur +1
-      if compteur  == 1000
-          client.publish("capteurs/angle","angle AVG "+str(angleAVG)+" angleAVD "+str(angleAVD)+ " angle AR "+str(angleAR),qos=0, retain=False)
+      if compteur == 30:
+          client.publish("capteurs/angle","angle AVG "+str(angleAVG)+" angleAVD "+str(angleAVD)+ " angle AR "+str(angleAR)+" numero "+str(affichage),qos=0, retain=False)
           compteur = 0
+          affichage = affichage +1
 
   def setup(self):
     with open(os.path.join(settings.DIR,'testlog.log'),'w') as log:
