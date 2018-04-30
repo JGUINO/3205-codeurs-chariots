@@ -311,7 +311,7 @@ class MyDaemon(Daemon):
     #client.publish("capteurs/angle", str(angAVG)+" "+str(angAVD)+" "+str(angAR)+" "+str(FangCaroussel)+" "+str(self.signe(angAVG+angAVD)), qos=0, retain=False)
     #if FangCaroussel != self.signe(angAVG+angAVD) :    
         if self.PresqueEgal(angAVG + angAVD, 0 , Precision) == True :
-            client.publish("capteurs/angle/avant", "Caroussel", qos=0, retain=False)
+            #client.publish("capteurs/angle/avant", "Caroussel", qos=0, retain=False)
             self.eteintRelais(1)
             self.eteintRelais(2)
             FangCaroussel = 0
