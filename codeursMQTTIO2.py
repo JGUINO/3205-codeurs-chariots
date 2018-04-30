@@ -195,21 +195,21 @@ class MyDaemon(Daemon):
                 enc['angle'] = 0.0
             elif mode == 2 :
                 enc['angle'] = -110.0  
-        elif enc['number'] == 1:
+       elif enc['number'] == 1:
            #angleAVD
            if mode == 1 :     
                 enc['angle'] = 0.0
-            elif mode == 2 :
+           elif mode == 2 :
                 enc['angle'] = 110.0 
          
-        elif enc['number'] == 2:
+       elif enc['number'] == 2:
            #angleAR
            if mode == 1 :     
                 enc['angle'] = -20.0
-            elif mode == 2 :
+           elif mode == 2 :
                 enc['angle'] = 90.0
       
-      self.saveAngle(enc)
+       self.saveAngle(enc)
 
   def setupMaxiIO(self, pargv):
         if len(pargv) < 3:
