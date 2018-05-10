@@ -27,7 +27,7 @@
 import math
 import threading
 import time
-import RPI.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 class RotaryEncoder:
 
