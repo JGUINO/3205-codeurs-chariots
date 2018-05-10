@@ -32,6 +32,7 @@ from codeurs_rotatifs import RotaryEncoder
 import codeurs_rotatifs as rotary_encoder
 # JGUI
 
+
 #import gaugette.gpio
 #import gaugette.platform
 #import paho.mqtt.client as mqtt
@@ -45,13 +46,92 @@ import os.path
 sys.path.insert(0,os.path.join("/home/pi/yoctolib_python","Sources"))
 sys.path.append(os.path.join("..","yoctolib_python","Sources"))
 sys.path.append(os.path.join("..","yoctolib_python","Sources","cdll"))
+sys.path.insert(0, "/home/pi/Adafruit_Python_SSD1306")
+
+import Adafruit_SSD1306
+
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 from yocto_api import *
 from yocto_digitalio import *
 from functools import partial
 import RPi.GPIO as GPIO
 
+class affichageOLED:
 
+    def __init__(self, ratioMP=3.14,PressionMax=1.8,NomCapteur="CapteurX"):
+
+        self.ratioMP=ratioMP
+        self.pressionMax=PressionMax
+        self.pressionHaute=0
+        self.nomCapteur=NomCapteur
+# Raspberry Pi pin configuration:
+        RST = None     # on the PiOLED this pin isnt used
+# 128x32 display with hardware I2C:
+        self.disp = Adafruit_SSD1306.SSD1306_128_32(rst=RST)
+# Initialize library.
+        self.disp.begin()
+# Clear display.
+        self.disp.clear()
+        self.disp.display()
+# Create blank image for drawing.
+
+# Make sure to create image with mode '1' for 1-bit color.
+        self.width = self.disp.width
+        self.height = self.disp.height
+        self.image = Image.new('1', (self.width, self.height))
+# Get drawing object to draw on image.
+        self.draw = ImageDraw.Draw(self.image)
+# Draw a black filled box to clear the image.
+        self.draw.rectangle((0,0,self.width,self.height), outline=0, fill=0)
+# Draw some shapes.
+# First define some constants to allow easy resizing of shapes.
+        padding = -2
+        self.top = padding
+        self.bottom = self.height-padding
+# Move left to right keeping track of the current x position for drawing shapes.
+        self.x = 2
+# Load default font.
+        self.fontstandard = ImageFont.load_default()
+# Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
+# Some other nice fonts to try: http://www.dafont.com/bitmap.php
+#        self.font = ImageFont.truetype('/home/pi/3189-capteurs-pressions/Starjedi.ttf', 16)
+#        self.petiteFont=ImageFont.truetype('/home/pi/3189-capteurs-pressions/Starjedi.ttf', 10)
+#        self.trespetiteFont=ImageFont.truetype('/home/pi/3189-capteurs-pressions/Starjedi.ttf', 8)
+
+    def affNettoie(self):
+       self.draw.rectangle((0,0,self.width,self.height), outline=0, fill=0)
+       self.disp.image(self.image)
+       self.disp.display()
+       return True   
+
+    def affLancement(self, hx):
+        self.affNettoie()
+        self.draw.text((self.x, self.top+8),"Tarage "+self.nomCapteur, font=self.petiteFont, fill=255)
+        self.draw.text((self.x, self.top+18),"Decal:"+str(int(hx.get_current_offset())), font=self.font, fill=255)
+        self.draw.text((self.x, self.top+32),"Ratio:"+str(int(hx.get_current_scale_ratio())), font=self.font, fill=255)
+        self.draw.text((self.x, self.top+56),"CMC(c) 2018",  font=self.trespetiteFont, fill=255)
+        self.disp.image(self.image)
+        self.disp.display()
+        return True
+
+    def affJauge(self, x1, y1, x2, y2, pourcentage=0.5):
+        self.draw.rectangle((x1,y1,x2,y2),255,255)
+        self.draw.rectangle((x1+int(pourcentage*(x2-x1)),y1,x2-2,y2),0,255)
+        return True
+
+    def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
+        self.affNettoie()
+        self.draw.text((self.x, self.top),"AR.: "+str(valangAR)+" degres", font=self.font, fill=255)
+        self.draw.text((self.x, self.top+9),"AVG.: "+str(valangAVG)+" degres", font=self.font, fill=255)
+        self.draw.text((self.x, self.top+18),"AVD.: "+str(valangAVD)+" degres", font=self.font, fill=255)
+        #self.affJauge(0,self.top+24,self.width,self.top+52,ratioPression)
+        self.draw.text((self.x, self.top+26),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
+        self.disp.image(self.image)
+        self.disp.display()
+        return True
 
 class MyDaemon(Daemon):
   global Vcontrole_angles
