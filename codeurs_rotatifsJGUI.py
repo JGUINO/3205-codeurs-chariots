@@ -27,21 +27,20 @@
 import math
 import threading
 import time
+import RPI.GPIO as GPIO
 
 class RotaryEncoder:
 
-    #----------------------------------------------------------------------
-    # Pass the wiring pin numbers here.  See:
-    #  https://projects.drogon.net/raspberry-pi/wiringpi2/pins/
-    #----------------------------------------------------------------------
-    def __init__(self, gpio, a_pin, b_pin):
-        self.gpio = gpio
+    def __init__(self, a_pin, b_pin):
+        #self.gpio = gpio
+        GPIO.set_mode(gpio.BCM)
         self.a_pin = a_pin
         self.b_pin = b_pin
 
-        self.gpio.setup(self.a_pin, self.gpio.IN, self.gpio.PUD_UP)
-        self.gpio.setup(self.b_pin, self.gpio.IN, self.gpio.PUD_UP)
-
+        #self.gpio.setup(self.a_pin, self.gpio.IN, self.gpio.PUD_UP)
+        GPIO.setup(a_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        #self.gpio.setup(self.b_pin, self.gpio.IN, self.gpio.PUD_UP)
+        GPIO.setup(b_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.steps = 0
         self.last_delta = 0
         self.r_seq = self.rotation_sequence()
@@ -57,8 +56,10 @@ class RotaryEncoder:
     # Gets the 2-bit rotation state of the current position
     # This is deprecated - we now use rotation_sequence instead.
     def rotation_state(self):
-        a_state = self.gpio.input(self.a_pin)
-        b_state = self.gpio.input(self.b_pin)
+        #a_state = self.gpio.input(self.a_pin)
+        a_state = GPIO.input(self.a_pin)
+        #b_state = self.gpio.input(self.b_pin)
+        b_state = GPIO.input(self.b_pin)
         r_state = a_state | b_state << 1
         return r_state
 
@@ -76,8 +77,10 @@ class RotaryEncoder:
     #   seq = (A ^ B) | B << 2
     #
     def rotation_sequence(self):
-        a_state = self.gpio.input(self.a_pin)
-        b_state = self.gpio.input(self.b_pin)
+        #a_state = self.gpio.input(self.a_pin)
+        a_state = GPIO.input(self.a_pin)
+        #b_state = self.gpio.input(self.b_pin)
+        b_state = GPIO.input(self.b_pin)
         r_seq = (a_state ^ b_state) | b_state << 1
         return r_seq
 
@@ -134,7 +137,7 @@ class RotaryEncoder:
             threading.Thread.__init__(self)
             self.lock = threading.Lock()
             self.stopping = False
-            self.encoder = RotaryEncoder(gpio, a_pin, b_pin)
+            self.encoder = RotaryEncoder(a_pin, b_pin)
             self.daemon = True
             self.delta = 0
             self.delay = 0.0001

@@ -68,19 +68,8 @@ class Daemon:
     so = open(self.stdout, 'a+')
     #se = open(self.stderr, 'a+', 0)
     se = open(self.stderr, 'a+')
-    
-    #os.dup2(si.fileno(), sys.stdin.fileno())
-    #os.dup2(so.fileno(), sys.stdout.fileno())
-    #os.dup2(se.fileno(), sys.stderr.fileno())
-    #sys.stderr.write("3 Dup2 ok")
-    #sys.stdout.write("tout va bien3")
-    #sys.stdout.flush()
-    #sys.stderr.flush()
-    # write pidfile
     atexit.register(self.delpid)
     pid = str(os.getpid())
-    #sys.stderr.write("tout va bien4")
-    #sys.stderr.flush()    
     open(self.pidfile,'w+').write("%s\n" % pid)
    
   
