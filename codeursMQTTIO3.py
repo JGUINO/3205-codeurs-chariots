@@ -107,10 +107,10 @@ class affichageOLED:
 	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
 		self.affNettoie()
 		self.draw.text((self.x, self.top),"AR.: "+str(valangAR)+" degres", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+9),"AVG.: "+str(valangAVG)+" degres", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+18),"AVD.: "+str(valangAVD)+" degres", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+18),"AVG.: "+str(valangAVG)+" degres", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+39),"AVD.: "+str(valangAVD)+" degres", font=self.font, fill=255)
 		#self.affJauge(0,self.top+24,self.width,self.top+52,ratioPression)
-		self.draw.text((self.x, self.top+26),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
+		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
 		self.disp.display()
 		return True
@@ -171,7 +171,7 @@ class MyDaemon(Daemon):
 				affichage = affichage +1
 
 	def setup(self):
-		self.d=affichageOLED(32)
+		self.d=affichageOLED(64)
 		self.setupEncoders()
 		#mise en mode 1 par defaut au demarrage du programme avant la radiocommande
 		self.zero(mode=1)
