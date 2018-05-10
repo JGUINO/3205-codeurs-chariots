@@ -106,9 +106,9 @@ class affichageOLED:
 
 	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
 		self.affNettoie()
-		self.draw.text((self.x, self.top),"AR.: "+str(valangAR)+" deg.", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+16),"AVG.: "+str(valangAVG)+" deg.", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+32),"AVD.: "+str(valangAVD)+" deg.", font=self.font, fill=255)
+		self.draw.text((self.x, self.top),"AR: "+str(valangAR)+" deg", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+16),"AVG: "+str(valangAVG)+" deg", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+32),"AVD: "+str(valangAVD)+" deg", font=self.font, fill=255)
 		#self.affJauge(0,self.top+24,self.width,self.top+52,ratioPression)
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
@@ -354,7 +354,7 @@ if __name__ == "__main__":
 			daemon.debug=True
 			daemon.start()
 		elif 'stop' == sys.argv[1]:
-			GPIO.cleanup()
+			#GPIO.cleanup() pas dans le bon process
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()
