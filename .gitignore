@@ -1,3 +1,8 @@
 *.swp
 *.swo
 *.pyc
+/.vs/3205-codeurs-chariots/v15/.suo
+/.vs/3205-codeurs-chariots/v15/Browse.VC.db
+/.vs/3205-codeurs-chariots/v15/Browse.VC.opendb
+/.vs/ProjectSettings.json
+/.vs/slnx.sqlite
