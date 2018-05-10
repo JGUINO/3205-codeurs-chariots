@@ -354,8 +354,8 @@ if __name__ == "__main__":
 			daemon.debug=True
 			daemon.start()
 		elif 'stop' == sys.argv[1]:
+			GPIO.cleanup()
 			daemon.stop()
-            GPIO.cleanup()
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()
 		else:
