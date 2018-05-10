@@ -143,7 +143,7 @@ class RotaryEncoder:
             self.delay = 0.0001
             #JGUI
             isr=self.isr()
-            GPIO.add_event_detect(a_pin, GPIO.BOTH, callback=isr)
+            GPIO.add_event_detect(a_pin, GPIO.BOTH, callback=self.isr)
             GPIO.add_event(b_pin, GPIO.BOTH, callback=self.isr)
 
 
