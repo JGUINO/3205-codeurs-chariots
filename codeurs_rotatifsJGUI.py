@@ -81,7 +81,7 @@ class RotaryEncoder:
         a_state = GPIO.input(self.a_pin)
         #b_state = self.gpio.input(self.b_pin)
         b_state = GPIO.input(self.b_pin)
-        r_seq = (a_state ^ b_state) | b_state << 2
+        r_seq = (a_state ^ b_state) | b_state << 1
         return r_seq
 
     def update(self):
