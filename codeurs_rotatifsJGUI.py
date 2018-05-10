@@ -130,8 +130,8 @@ class RotaryEncoder:
     #    self.gpio.trigger(self.b_pin, self.gpio.EDGE_BOTH, isr)
 
     class Worker(threading.Thread):
-        #def isr(self):
-        #    self.encoder.update()
+        def isr(self):
+            self.encoder.update()
         
         def __init__(self, a_pin, b_pin):
             threading.Thread.__init__(self)
@@ -142,12 +142,9 @@ class RotaryEncoder:
             self.delta = 0
             self.delay = 0.0001
             #JGUI
-            #self.gpio = gpio
-            #self.a_pin = a_pin
-            #self.b_pin = b_pin
-            #isr = self.isr()
-            #self.gpio.trigger(self.a_pin, self.gpio.EDGE_BOTH, isr)
-            #self.gpio.trigger(self.b_pin, self.gpio.EDGE_BOTH, isr)
+            isr=self.isr()
+            GPIO.add_event_detect(a_pin, GPIO.BOTH, callback=isr)
+            GPIO.add_event(b_pin, GPIO.BOTH, callback=self.isr)
 
 
         def run(self):
