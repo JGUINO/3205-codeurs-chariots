@@ -80,7 +80,7 @@ class affichageOLED:
 		self.draw.rectangle((0,0,self.width,self.height), outline=0, fill=0)
 # Draw some shapes.
 # First define some constants to allow easy resizing of shapes.
-		padding = -2
+		padding = -4
 		self.top = padding
 		self.bottom = self.height-padding
 # Move left to right keeping track of the current x position for drawing shapes.
@@ -106,9 +106,9 @@ class affichageOLED:
 
 	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
 		self.affNettoie()
-		self.draw.text((self.x, self.top),"AR.: "+str(valangAR)+" degres", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+18),"AVG.: "+str(valangAVG)+" degres", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+39),"AVD.: "+str(valangAVD)+" degres", font=self.font, fill=255)
+		self.draw.text((self.x, self.top),"AR.: "+str(valangAR)+" deg.", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+16),"AVG.: "+str(valangAVG)+" deg.", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+32),"AVD.: "+str(valangAVD)+" deg.", font=self.font, fill=255)
 		#self.affJauge(0,self.top+24,self.width,self.top+52,ratioPression)
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
