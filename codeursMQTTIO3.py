@@ -170,75 +170,57 @@ class MyDaemon(Daemon):
 				compteur = 0
 				affichage = affichage +1
 
-  def setup(self):
-	self.d=affichageOLED(32)
-	self.setupEncoders()
-	#mise en mode 1 par defaut au demarrage du programme avant la radiocommande
-	self.zero(mode=1)
-	self.d.affNettoie()
-	if daemon.debug!=True:
-		self.setupMaxiIO(sys.argv)
-	return
+	def setup(self):
+		self.d=affichageOLED(32)
+		self.setupEncoders()
+		#mise en mode 1 par defaut au demarrage du programme avant la radiocommande
+		self.zero(mode=1)
+		self.d.affNettoie()
+		if daemon.debug!=True:
+			self.setupMaxiIO(sys.argv)
+		return
 
-  def setupLogger(self):
-	pass
-	# set up logger
-	self.logger = logging.getLogger(__name__)
-	#self.logger.setLevel(logging.DEBUG)
-	self.logger.setLevel(logging.INFO)
-	# create a file handler for the logger
-	fh = logging.FileHandler(settings.LOG_FILE)
-	#fh.setLevel(logging.DEBUG)
-	fh.setLevel(logging.INFO)
-	# format logging
-	fformatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-	fh.setFormatter(fformatter)
-	self.logger.addHandler(fh)
-
-  def setupEncoders(self):
-	self.encoders=[]
-	enc_cnt = 0
-	for enc in settings.ENCODERS:
-	  self.encoders.append(enc)
-	  # ligne JGUI
-	  #gpio = gaugette.gpio.GPIO()
-	  pinA=enc['pinA']
-	  pinB=enc['pinB']
-	  # start a monitoring thread sans gpio par JGUI
-	  self.encoders[enc_cnt]['obj'] = rotary_encoder.RotaryEncoder.Worker(pinA,pinB)
-	  self.encoders[enc_cnt]['number'] = enc_cnt
-	  self.encoders[enc_cnt]['obj'].start()
-	  # read recorded angle if log file exists
-	  #self.readAngle(enc)
-
-	  enc_cnt += 1
-
-	self.encoder_count = enc_cnt
+	def setupEncoders(self):
+		self.encoders=[]
+		enc_cnt = 0
+		for enc in settings.ENCODERS:
+			self.encoders.append(enc)
+			# ligne JGUI
+			#gpio = gaugette.gpio.GPIO()
+			pinA=enc['pinA']
+			pinB=enc['pinB']
+			# start a monitoring thread sans gpio par JGUI
+			self.encoders[enc_cnt]['obj'] = rotary_encoder.RotaryEncoder.Worker(pinA,pinB)
+			self.encoders[enc_cnt]['number'] = enc_cnt
+			self.encoders[enc_cnt]['obj'].start()
+			#self.readAngle(enc)
+			enc_cnt += 1
+		self.encoder_count = enc_cnt
  # Initalisation des angles    
-  def zero(self, mode):
-	## positionne les angles de depart  en mode 1 droit ou mode 2 caroussel
-	for enc in self.encoders:
-		if enc['number'] == 0:
-			#angleAVG
-			if mode == 1 :
-				enc['angle'] = 0.0
-			elif mode == 2 :
-				enc['angle'] = -110.0  
-		elif enc['number'] == 1:
-			#angleAVD
-			if mode == 1 :     
-				enc['angle'] = 0.0
-			elif mode == 2 :
-				enc['angle'] = 110.0 
-		elif enc['number'] == 2:
-			#angleAR
-			if mode == 1 :     
-				enc['angle'] = -20.0
-			elif mode == 2 :
-				enc['angle'] = 90.0
-	return True
+	def zero(self, mode):
+		## positionne les angles de depart  en mode 1 droit ou mode 2 caroussel
+		for enc in self.encoders:
+			if enc['number'] == 0:
+				#angleAVG
+				if mode == 1 :
+					enc['angle'] = 0.0
+				elif mode == 2 :
+					enc['angle'] = -110.0  
+			elif enc['number'] == 1:
+				#angleAVD
+				if mode == 1 :     
+					enc['angle'] = 0.0
+				elif mode == 2 :
+					enc['angle'] = 110.0 
+			elif enc['number'] == 2:
+				#angleAR
+				if mode == 1 :     
+					enc['angle'] = -20.0
+				elif mode == 2 :
+					enc['angle'] = 90.0
+		return True
 
-  def setupMaxiIO(self, pargv):
+	def setupMaxiIO(self, pargv):
 		if len(pargv) < 3:
 			sys.exit("Parametre manquant pour initialiser IO")
 			
@@ -268,7 +250,7 @@ class MyDaemon(Daemon):
 		if not (self.io.isOnline()):
 			die('device not connected')
 
-	  # lets configure the channels direction
+	    # lets configure the channels direction
 		# bits 0..3 as output
 		# bits 4..7 as input
 		self.io.set_portDirection(0x0F)
@@ -283,16 +265,15 @@ class MyDaemon(Daemon):
 		return
 
 
-  def litRelais (self, IdRelais):
-	  valRelais = self.io.get_bitState(IdRelais)
-	  return valRelais
+	def litRelais (self, IdRelais):
+		valRelais = self.io.get_bitState(IdRelais)
+		return valRelais
 
-  def allumeRelais (self, IdRelais):
-	   self.io.set_bitState(IdRelais,1)
-  def eteintRelais (self, IdRelais):
-	   self.io.set_bitState(IdRelais,0)
-	   
-  def changeRelais (self, IdRelais):
+	def allumeRelais (self, IdRelais):
+		self.io.set_bitState(IdRelais,1)
+	def eteintRelais (self, IdRelais):
+		self.io.set_bitState(IdRelais,0)
+	def changeRelais (self, IdRelais):
 		etat=self.io.get_bitState(IdRelais)
 		if etat == 0 :
 			self.io.set_bitState(IdRelais,1)
@@ -300,19 +281,19 @@ class MyDaemon(Daemon):
 			self.io.set_bitState(IdRelais,0)
 		return 
 
-  def controle_angleAR(self, angAVD, angAVG, angAR, FangAR, angVoulu, Precision):
+	def controle_angleAR(self, angAVD, angAVG, angAR, FangAR, angVoulu, Precision):
 	
-	if self.PresqueEgal(angAR, angVoulu, Precision)== True and FangAR == False :
-		FangAR = True
-		#self.d.affVal(angAR,angAVG,angAVD,self.mode)
-		#client.publish("capteurs/angle/AR", str(angVoulu), qos=0, retain=False)
-		if daemon.debug!=True:
-			self.allumeRelais(0)
-	elif self.PresqueEgal(angAR, angVoulu, Precision) == False:
-		FangAR = False
-		if daemon.debug!=True:
-			self.eteintRelais(0)
-	return FangAR
+		if self.PresqueEgal(angAR, angVoulu, Precision)== True and FangAR == False :
+			FangAR = True
+			#self.d.affVal(angAR,angAVG,angAVD,self.mode)
+			#client.publish("capteurs/angle/AR", str(angVoulu), qos=0, retain=False)
+			if daemon.debug!=True:
+				self.allumeRelais(0)
+		elif self.PresqueEgal(angAR, angVoulu, Precision) == False:
+			FangAR = False
+			if daemon.debug!=True:
+				self.eteintRelais(0)
+		return FangAR
 
 	def signe( self,entier):
 		if entier != 0:
@@ -321,9 +302,9 @@ class MyDaemon(Daemon):
 			vsigne = entier
 		return vsigne
 
-  def controle_anglesCaroussel(self, angAVD, angAVG, angAR, FangCaroussel, Precision):
-	#client.publish("capteurs/angle", str(angAVG)+" "+str(angAVD)+" "+str(angAR)+" "+str(FangCaroussel)+" "+str(self.signe(angAVG+angAVD)), qos=0, retain=False)
-	#if FangCaroussel != self.signe(angAVG+angAVD) :    
+	def controle_anglesCaroussel(self, angAVD, angAVG, angAR, FangCaroussel, Precision):
+		#client.publish("capteurs/angle", str(angAVG)+" "+str(angAVD)+" "+str(angAR)+" "+str(FangCaroussel)+" "+str(self.signe(angAVG+angAVD)), qos=0, retain=False)
+		#if FangCaroussel != self.signe(angAVG+angAVD) :    
 		if self.PresqueEgal(angAVG + angAVD, 0 , Precision) == True :
 			#client.publish("capteurs/angle/avant", "Caroussel", qos=0, retain=False)
 			if daemon.debug!=True:
@@ -347,32 +328,31 @@ class MyDaemon(Daemon):
 			FangCaroussel = self.signe(angAVG+angAVD)
 			self.d.affVal(angAR,angAVG,angAVD,self.mode)
 		##FangCaroussel = self.signe(angAVG+angAVD) 
-
 		return FangCaroussel
 
-  def PresqueEgal( self, angA, angB, Precision):
+	def PresqueEgal( self, angA, angB, Precision):
 		Vpresquegal = False
 		if abs(abs(angA)-abs(angB)) <= Precision:
 			Vpresquegal = True
 		return Vpresquegal
 
 if __name__ == "__main__":
-  daemon = MyDaemon(settings.PID_FILE)
-  if len(sys.argv) == 3:
-	if 'start' == sys.argv[1]:
-	  daemon.debug=False
-	  daemon.start()
-	if 'foreground' == sys.argv[1]:# for debugging
-	  daemon.debug=True
-	  daemon.start()
-	elif 'stop' == sys.argv[1]:
-	  daemon.stop()
-	elif 'restart' == sys.argv[1]:
-	  daemon.restart()
+	daemon = MyDaemon(settings.PID_FILE)
+	if len(sys.argv) == 3:
+		if 'start' == sys.argv[1]:
+			daemon.debug=False
+			daemon.start()
+		if 'foreground' == sys.argv[1]:# for debugging
+			daemon.debug=True
+			daemon.start()
+		elif 'stop' == sys.argv[1]:
+			daemon.stop()
+		elif 'restart' == sys.argv[1]:
+			daemon.restart()
+		else:
+			print( "Unknown command")
+			sys.exit(2)
+			sys.exit(0)
 	else:
-	  print( "Unknown command")
-	  sys.exit(2)
-	sys.exit(0)
-  else:
-	print ("usage: ",sys.argv[0], " start|stop|restart|foreground NomduMaxiIOV2 ") 
-	sys.exit(2)
+		print ("usage: ",sys.argv[0], " start|stop|restart|foreground NomduMaxiIOV2 ") 
+		sys.exit(2)
