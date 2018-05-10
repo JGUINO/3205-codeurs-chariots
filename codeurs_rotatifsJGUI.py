@@ -33,7 +33,7 @@ class RotaryEncoder:
 
     def __init__(self, a_pin, b_pin):
         #self.gpio = gpio
-        GPIO.setmode(gpio.BCM)
+        GPIO.setmode(GPIO.BCM)
         self.a_pin = a_pin
         self.b_pin = b_pin
 
