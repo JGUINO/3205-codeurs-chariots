@@ -89,7 +89,7 @@ class affichageOLED:
 		self.fontstandard = ImageFont.load_default()
 # Alternatively load a TTF font.  Make sure the .ttf font file is in the same directory as the python script!
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
-#        self.font = ImageFont.truetype('/home/pi/3189-capteurs-pressions/Starjedi.ttf', 16)
+		self.font = ImageFont.truetype('/home/pi/3205-codeurs-chariots/Starjedi.ttf', 16)
 #        self.petiteFont=ImageFont.truetype('/home/pi/3189-capteurs-pressions/Starjedi.ttf', 10)
 #        self.trespetiteFont=ImageFont.truetype('/home/pi/3189-capteurs-pressions/Starjedi.ttf', 8)
 
