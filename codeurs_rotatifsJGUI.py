@@ -133,7 +133,7 @@ class RotaryEncoder:
         #def isr(self):
         #    self.encoder.update()
         
-        def __init__(self, gpio, a_pin, b_pin):
+        def __init__(self, a_pin, b_pin):
             threading.Thread.__init__(self)
             self.lock = threading.Lock()
             self.stopping = False
