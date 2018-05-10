@@ -131,6 +131,9 @@ class MyDaemon(Daemon):
 		#JGUI TEST
 		compteur = 0
 		affichage = 0
+		angleARsav=0
+		angleAVGsav=0
+		angleAVDsav=0
 		Precision = settings.PRECISION
 
 		while True:
@@ -166,9 +169,14 @@ class MyDaemon(Daemon):
 			#time.sleep(0.01)
 			compteur = compteur +1
 			if compteur == 30:
-				self.d.affVal(angleAR,angleAVG,angleAVD)
+				if angleAR != angleARsav or angleAVG!=angleAVGsav or angleAVD!=angleAVDsav:
+					self.d.affVal(angleAR,angleAVG,angleAVD)
+					angleARsav=angleAR
+					angleAVGsav=angleAVG
+					angleAVDsav=angleAVD
+					affichage = affichage +1
 				compteur = 0
-				affichage = affichage +1
+				
 
 	def setup(self):
 		self.d=affichageOLED(64)
@@ -347,6 +355,7 @@ if __name__ == "__main__":
 			daemon.start()
 		elif 'stop' == sys.argv[1]:
 			daemon.stop()
+            GPIO.cleanup()
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()
 		else:
