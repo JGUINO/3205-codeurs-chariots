@@ -109,7 +109,7 @@ class affichageOLED:
 		self.draw.text((self.x, self.top),"Ar: "+str(valangAR)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+16),"Avg: "+str(valangAVG)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+32),"Avd: "+str(valangAVD)+" deg", font=self.font, fill=255)
-		ratioAngle=max(1,0.5+(valangAVD+valangAVG)/(110+110))
+		ratioAngle=max(0,min(1,0.5+(valangAVD+valangAVG)/(110+110)))
 		self.affJauge(0,self.top,self.width,self.top+16,ratioAngle)
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
