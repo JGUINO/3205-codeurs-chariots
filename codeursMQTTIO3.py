@@ -106,9 +106,9 @@ class affichageOLED:
 
 	def affAction(self,action="D"):
 		if action=="D":
-			self.draw.ellipse(self.x+self.width-20,int(self.height/2)-10,self.x+self.width,int(self.height/2)+10,255,255)
+			self.draw.ellipse((self.x+self.width-20,int(self.height/2)-10,self.x+self.width,int(self.height/2)+10),255,255)
 		elif action=="G":
-			self.draw.ellipse(self.x,int(self.height/2)-10,self.x+20,int(self.height/2)+10,255,255)
+			self.draw.ellipse((self.x,int(self.height/2)-10,self.x+20,int(self.height/2)+10),255,255)
 		return True
 
 	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
