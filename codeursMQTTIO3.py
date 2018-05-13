@@ -334,7 +334,7 @@ class MyDaemon(Daemon):
 				self.eteintRelais(1)
 			FangCaroussel = self.signe(angAVG+angAVD)
 			self.d.affVal(angAR,angAVG,angAVD,self.mode)
-			self.D.affAction("D")
+			self.d.affAction("D")
 		elif abs(angAVG) < abs(angAVD) and FangCaroussel != self.signe(angAVG+angAVD):
 			# roue avant droite en retard on allume son relais 1
 			#client.publish("capteurs/angle/Caroussel", "AVD en retard", qos=0, retain=False)
