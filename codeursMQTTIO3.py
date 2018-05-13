@@ -106,7 +106,7 @@ class affichageOLED:
 
 	def affAction(self,action="Rien"):
 		if action=="D":
-			self.draw.ellipse((self.x+self.width-20,int(self.height/2)-10,self.x+self.width,int(self.height/2)+10),255,255)
+			self.draw.ellipse((self.x+self.width-20,int(self.height/2)-10,self.x+self.width-4,int(self.height/2)+10),255,255)
 		elif action=="G":
 			self.draw.ellipse((self.x,int(self.height/2)-10,self.x+20,int(self.height/2)+10),255,255)
 		else:
@@ -134,6 +134,7 @@ class MyDaemon(Daemon):
 		Vcontrole_angles = False
 		self.mode=1
 		self.setup()
+		self.action="Rien"
 		angleAVG = 0
 		angleAVD = 0
 		angleAR = 0
@@ -180,7 +181,7 @@ class MyDaemon(Daemon):
 			compteur = compteur +1
 			if compteur == 30:
 				if angleAR != angleARsav or angleAVG!=angleAVGsav or angleAVD!=angleAVDsav:
-					self.d.affVal(angleAR,angleAVG,angleAVD)
+					self.d.affVal(angleAR,angleAVG,angleAVD,self.action)
 					angleARsav=angleAR
 					angleAVGsav=angleAVG
 					angleAVDsav=angleAVD
@@ -329,6 +330,8 @@ class MyDaemon(Daemon):
 				self.eteintRelais(1)
 				self.eteintRelais(2)
 			FangCaroussel = 0
+			self.action="Rien"
+			self.d.affVal(angAR,angAVG,angAVD,self.mode,self.action)
 		elif abs(angAVG) > abs(angAVD) and FangCaroussel != self.signe(angAVG+angAVD):
 			# roue avant gauche en retard on allume son relais 2
 			#client.publish("capteurs/angle/Caroussel", "AVG en retard", qos=0, retain=False)
@@ -336,7 +339,8 @@ class MyDaemon(Daemon):
 				self.allumeRelais(2)
 				self.eteintRelais(1)
 			FangCaroussel = self.signe(angAVG+angAVD)
-			self.d.affVal(angAR,angAVG,angAVD,self.mode,"D")
+			self.action="D"
+			self.d.affVal(angAR,angAVG,angAVD,self.mode,self.action)
 			#on dit a la roue droit de continuer on pourrait dire a la gauche arret
 		elif abs(angAVG) < abs(angAVD) and FangCaroussel != self.signe(angAVG+angAVD):
 			# roue avant droite en retard on allume son relais 1
@@ -345,7 +349,8 @@ class MyDaemon(Daemon):
 				self.allumeRelais(1)
 				self.eteintRelais(2)
 			FangCaroussel = self.signe(angAVG+angAVD)
-			self.d.affVal(angAR,angAVG,angAVD,self.mode,"G")
+			self.action="G"
+			self.d.affVal(angAR,angAVG,angAVD,self.mode,self.action)
 		##FangCaroussel = self.signe(angAVG+angAVD) 
 		return FangCaroussel
 
@@ -370,7 +375,7 @@ if __name__ == "__main__":
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()
 		else:
-			print( "Unknown command")
+			print( "Commande inconnue")
 			sys.exit(2)
 			sys.exit(0)
 	else:
