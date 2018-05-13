@@ -104,13 +104,20 @@ class affichageOLED:
 		self.draw.rectangle((x1+int(pourcentage*(x2-x1)),y1,x2-2,y2),0,255)
 		return True
 
+	def affAction(self,action="D"):
+		if action=="D":
+			self.ImageDraw.ellipse(self.x+self.width-20,int(self.height/2)-10,self.x+self.width,int(self.height/2)+10,255,255)
+		elif action=="G":
+			self.ImageDraw.ellipse(self.x,int(self.height/2)-10,self.x+20,int(self.height/2)+10,255,255)
+		return True
+
 	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
 		self.affNettoie()
 		self.draw.text((self.x, self.top),"Ar: "+str(valangAR)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+16),"Avg: "+str(valangAVG)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+32),"Avd: "+str(valangAVD)+" deg", font=self.font, fill=255)
 		ratioAngle=max(0,min(1,0.5+(valangAVD+valangAVG)/(110+110)))
-		self.affJauge(0,self.top,self.width,self.top+16,ratioAngle)
+		self.affJauge(0,self.top+4,self.width,self.top+20,ratioAngle)
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
 		self.disp.display()
@@ -167,7 +174,6 @@ class MyDaemon(Daemon):
 							self.mode=1
 					Vcontrole_angles = False
 			time.sleep(settings.REFRESH_RATE)
-			#time.sleep(0.01)
 			compteur = compteur +1
 			if compteur == 30:
 				if angleAR != angleARsav or angleAVG!=angleAVGsav or angleAVD!=angleAVDsav:
