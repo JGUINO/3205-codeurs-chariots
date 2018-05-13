@@ -104,7 +104,7 @@ class affichageOLED:
 		self.draw.rectangle((x1+int(pourcentage*(x2-x1)),y1,x2-2,y2),0,255)
 		return True
 
-	def affAction(self,action="Rien"):
+	def affAction(self,action):
 		if action=="D":
 			self.draw.ellipse((self.x+self.width-20,int(self.height/2)-10,self.x+self.width-4,int(self.height/2)+10),255,255)
 		elif action=="G":
@@ -113,7 +113,7 @@ class affichageOLED:
 			return False
 		return True
 
-	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1, action="Rien"):
+	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1, action):
 		self.affNettoie()
 		self.draw.text((self.x, self.top),"Ar: "+str(valangAR)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+16),"Avg: "+str(valangAVG)+" deg", font=self.font, fill=255)
@@ -181,7 +181,7 @@ class MyDaemon(Daemon):
 			compteur = compteur +1
 			if compteur == 30:
 				if angleAR != angleARsav or angleAVG!=angleAVGsav or angleAVD!=angleAVDsav:
-					self.d.affVal(angleAR,angleAVG,angleAVD,self.action)
+					self.d.affVal(angleAR,angleAVG,angleAVD,self.mode,self.action)
 					angleARsav=angleAR
 					angleAVGsav=angleAVG
 					angleAVDsav=angleAVD
