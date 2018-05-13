@@ -106,9 +106,9 @@ class affichageOLED:
 
 	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
 		self.affNettoie()
-		self.draw.text((self.x, self.top),"AR: "+str(valangAR)+" deg", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+16),"AVG: "+str(valangAVG)+" deg", font=self.font, fill=255)
-		self.draw.text((self.x, self.top+32),"AVD: "+str(valangAVD)+" deg", font=self.font, fill=255)
+		self.draw.text((self.x, self.top),"Ar: "+str(valangAR)+" deg", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+16),"Avg: "+str(valangAVG)+" deg", font=self.font, fill=255)
+		self.draw.text((self.x, self.top+32),"Avd: "+str(valangAVD)+" deg", font=self.font, fill=255)
 		#self.affJauge(0,self.top+24,self.width,self.top+52,ratioPression)
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
