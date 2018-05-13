@@ -12,17 +12,6 @@
 # to ground.  Pins A and B will have their pull-up resistor
 # pulled high.
 #
-# Usage:
-#
-#     import gaugette.rotary_encoder
-#     A_PIN = 7  # use wiring pin numbers here
-#     B_PIN = 9
-#     gpio = gaugette.gpio.GPIO()
-#     encoder = gaugette.rotary_encoder.RotaryEncoder(gpio, A_PIN, B_PIN)
-#     while 1:
-#       delta = encoder.get_delta() # returns 0,1,or -1
-#       if delta!=0:
-#         print delta
 
 import math
 import threading
@@ -141,16 +130,15 @@ class RotaryEncoder:
             self.daemon = True
             self.delta = 0
             self.delay = 1
-            #JGUI
-            #isr=self.isr()
             GPIO.add_event_detect(a_pin, GPIO.BOTH, callback=self.isr)
             GPIO.add_event_detect(b_pin, GPIO.BOTH, callback=self.isr)
 
 
         def run(self):
-            while not self.stopping:
-                self.encoder.update()
-                time.sleep(self.delay)
+            return True
+            #while not self.stopping:
+            #    self.encoder.update()
+            #    time.sleep(self.delay)
             # JGUI essai infructueux self.encoder.start()    
 
         def stop(self):

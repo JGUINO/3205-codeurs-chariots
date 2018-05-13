@@ -9,8 +9,8 @@ PID_FILE=os.path.join(DIR,'encoderd.pid')
 # log file
 LOG_FILE=os.path.join(DIR,'encoderd.log')
 
-# refresh rate (time in seconds between angle checks)
-REFRESH_RATE = 0.01
+# refresh rate (time in seconds between angle checks for display)
+REFRESH_RATE = 0.1
 
 # Precision de lecture en degres
 PRECISION = 3
