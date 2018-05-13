@@ -113,7 +113,7 @@ class affichageOLED:
 			return False
 		return True
 
-	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1, action):
+	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1, action="erreur"):
 		self.affNettoie()
 		self.draw.text((self.x, self.top),"Ar: "+str(valangAR)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+16),"Avg: "+str(valangAVG)+" deg", font=self.font, fill=255)
@@ -121,6 +121,8 @@ class affichageOLED:
 		ratioAngle=max(0,min(1,0.5+(valangAVD+valangAVG)/(110+110)))
 		self.affJauge(0,self.top+4,self.width,self.top+20,ratioAngle)
 		self.affAction(action)
+		if action=="erreur":
+			Mode=action
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
 		self.disp.display()
