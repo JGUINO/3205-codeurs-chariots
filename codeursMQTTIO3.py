@@ -143,7 +143,7 @@ class MyDaemon(Daemon):
 		FangAR0 = False
 		FangCaroussel = 0
 		#JGUI TEST
-		compteur = 0
+		self.compteurAff = 0
 		affichage = 0
 		angleARsav=0
 		angleAVGsav=0
@@ -180,15 +180,15 @@ class MyDaemon(Daemon):
 							self.mode=1
 					Vcontrole_angles = False
 			time.sleep(settings.REFRESH_RATE)
-			compteur = compteur +1
-			if compteur == 30:
+			self.compteurAff = self.compteurAff +1
+			if self.compteurAff == 30:
 				if angleAR != angleARsav or angleAVG!=angleAVGsav or angleAVD!=angleAVDsav:
 					self.d.affVal(angleAR,angleAVG,angleAVD,self.mode,self.action)
 					angleARsav=angleAR
 					angleAVGsav=angleAVG
 					angleAVDsav=angleAVD
 					affichage = affichage +1
-				compteur = 0
+				self.compteurAff = 0
 				
 
 	def setup(self):
@@ -332,8 +332,9 @@ class MyDaemon(Daemon):
 				self.eteintRelais(1)
 				self.eteintRelais(2)
 			FangCaroussel = 0
+			if self.action!="Rien":
+				self.d.affVal(angAR,angAVG,angAVD,self.mode,self.action)
 			self.action="Rien"
-			self.d.affVal(angAR,angAVG,angAVD,self.mode,self.action)
 		elif abs(angAVG) > abs(angAVD) and FangCaroussel != self.signe(angAVG+angAVD):
 			# roue avant gauche en retard on allume son relais 2
 			#client.publish("capteurs/angle/Caroussel", "AVG en retard", qos=0, retain=False)
