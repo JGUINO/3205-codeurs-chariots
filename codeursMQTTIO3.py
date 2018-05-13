@@ -104,20 +104,23 @@ class affichageOLED:
 		self.draw.rectangle((x1+int(pourcentage*(x2-x1)),y1,x2-2,y2),0,255)
 		return True
 
-	def affAction(self,action="D"):
+	def affAction(self,action="Rien"):
 		if action=="D":
 			self.draw.ellipse((self.x+self.width-20,int(self.height/2)-10,self.x+self.width,int(self.height/2)+10),255,255)
 		elif action=="G":
 			self.draw.ellipse((self.x,int(self.height/2)-10,self.x+20,int(self.height/2)+10),255,255)
+		else:
+			return False
 		return True
 
-	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1):
+	def affVal(self, valangAR=0, valangAVG=0, valangAVD=0, Mode=1, action="Rien"):
 		self.affNettoie()
 		self.draw.text((self.x, self.top),"Ar: "+str(valangAR)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+16),"Avg: "+str(valangAVG)+" deg", font=self.font, fill=255)
 		self.draw.text((self.x, self.top+32),"Avd: "+str(valangAVD)+" deg", font=self.font, fill=255)
 		ratioAngle=max(0,min(1,0.5+(valangAVD+valangAVG)/(110+110)))
 		self.affJauge(0,self.top+4,self.width,self.top+20,ratioAngle)
+		self.affAction(action)
 		self.draw.text((self.x, self.top+52),"CMC(c)2018"+" Mode:"+str(Mode),  font=self.fontstandard, fill=255)
 		self.disp.image(self.image)
 		self.disp.display()
@@ -333,8 +336,8 @@ class MyDaemon(Daemon):
 				self.allumeRelais(2)
 				self.eteintRelais(1)
 			FangCaroussel = self.signe(angAVG+angAVD)
-			self.d.affVal(angAR,angAVG,angAVD,self.mode)
-			self.d.affAction("D")
+			self.d.affVal(angAR,angAVG,angAVD,self.mode,"D")
+			#on dit a la roue droit de continuer on pourrait dire a la gauche arret
 		elif abs(angAVG) < abs(angAVD) and FangCaroussel != self.signe(angAVG+angAVD):
 			# roue avant droite en retard on allume son relais 1
 			#client.publish("capteurs/angle/Caroussel", "AVD en retard", qos=0, retain=False)
@@ -342,8 +345,7 @@ class MyDaemon(Daemon):
 				self.allumeRelais(1)
 				self.eteintRelais(2)
 			FangCaroussel = self.signe(angAVG+angAVD)
-			self.d.affVal(angAR,angAVG,angAVD,self.mode)
-			self.d.affAction("G")
+			self.d.affVal(angAR,angAVG,angAVD,self.mode,"G")
 		##FangCaroussel = self.signe(angAVG+angAVD) 
 		return FangCaroussel
 
