@@ -19,15 +19,15 @@ PRECISION = 3
 ENCODERS=[
   dict(
     name="HN3806A",                # device nickname
-    pinA=23,                     # BCM number
-    pinB=24,                     # BCM pin number
+    pinA=17,                     # BCM number
+    pinB=18,                     # BCM pin number
     calibration=360/600, # degrees/step, HN3806-AB-600N
     logfile=os.path.join(DIR,"Angle_HN3806A.log"),   # stores last known encoder value
   ),
   dict(
     name="HN3806B",                # device nickname
-    pinA=12,                     # BCM pin number
-    pinB=16,                     # BCM pin number
+    pinA=23,                     # BCM pin number
+    pinB=24,                     # BCM pin number
     calibration=360/600, # degrees/step, HN3806-AB-600N
     logfile=os.path.join(DIR,"Angle_HN3806B.log"),   # stores last known encoder value
   ),
