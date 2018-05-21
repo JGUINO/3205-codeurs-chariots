@@ -45,8 +45,10 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
-from yoctopuce.yocto_api import *
-from yoctopuce.yocto_digitalio import *
+#from yoctopuce.yocto_api import *
+from yocto_api import *
+#from yoctopuce.yocto_digitalio import *
+from yocto_digitalio import *
 from functools import partial
 import RPi.GPIO as GPIO
 
@@ -226,13 +228,13 @@ class MyDaemon(Daemon):
 				if mode == 1 :
 					enc['angle'] = 0.0
 				elif mode == 2 :
-					enc['angle'] = -110.0  
+					enc['angle'] = 110.0  
 			elif enc['number'] == 1:
 				#angleAVD
 				if mode == 1 :     
 					enc['angle'] = 0.0
 				elif mode == 2 :
-					enc['angle'] = 110.0 
+					enc['angle'] = -110.0 
 			elif enc['number'] == 2:
 				#angleAR
 				if mode == 1 :     
