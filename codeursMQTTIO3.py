@@ -45,10 +45,10 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
-#from yoctopuce.yocto_api import *
-from yocto_api import *
-#from yoctopuce.yocto_digitalio import *
-from yocto_digitalio import *
+from yoctopuce.yocto_api import *
+#from yocto_api import *
+from yoctopuce.yocto_digitalio import *
+#from yocto_digitalio import *
 from functools import partial
 import RPi.GPIO as GPIO
 
