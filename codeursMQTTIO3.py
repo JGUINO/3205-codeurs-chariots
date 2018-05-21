@@ -374,6 +374,8 @@ if __name__ == "__main__":
 			daemon.start()
 		elif 'stop' == sys.argv[1]:
 			#GPIO.cleanup() pas dans le bon process
+			d=affichageOLED(64)
+			d.affNettoie()
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()
