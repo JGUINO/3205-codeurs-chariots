@@ -367,8 +367,6 @@ class MyDaemon(Daemon):
 
 if __name__ == "__main__":
 	daemon = MyDaemon(settings.PID_FILE)
-	daemon.debug=False
-	daemon.start()
 	if len(sys.argv) == 3:
 		if 'start' == sys.argv[1]:
 			daemon.debug=False
