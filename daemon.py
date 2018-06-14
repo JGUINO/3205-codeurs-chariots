@@ -140,7 +140,6 @@ class Daemon:
     # erase the file
     if os.path.exists(self.pidfile):
           os.remove(self.pidfile)
-    return
 
   def compustart(self):
     """
