@@ -133,6 +133,22 @@ class Daemon:
         print (str(err))
         sys.exit(1)
 
+  def clean(self):
+    """
+    Clean the daemon file
+    """
+    # erase the file
+    if os.path.exists(self.pidfile):
+          os.remove(self.pidfile)
+    return
+
+  def compustart(self):
+    """
+    Restart the daemon
+    """
+    self.clean()
+    self.start()
+
   def restart(self):
     """
     Restart the daemon

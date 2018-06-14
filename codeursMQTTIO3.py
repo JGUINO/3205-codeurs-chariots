@@ -381,6 +381,8 @@ if __name__ == "__main__":
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()
+		elif 'compustart' == sys.argv[1]:
+			daemon.compustart()
 		else:
 			print( "Commande inconnue")
 			sys.exit(2)
