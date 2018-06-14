@@ -380,8 +380,10 @@ if __name__ == "__main__":
 			d.affNettoie()
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
+			daemon.debug=False
 			daemon.restart()
 		elif 'compustart' == sys.argv[1]:
+			daemon.debug=False
 			daemon.compustart()
 		else:
 			print( "Commande inconnue")
