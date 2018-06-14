@@ -138,8 +138,11 @@ class Daemon:
     Clean the daemon file
     """
     # erase the file
-    if os.path.exists(self.pidfile):
+    try:
+        if os.path.exists(self.pidfile):
           os.remove(self.pidfile)
+    except IOError:
+        pid = None
 
   def compustart(self):
     """
